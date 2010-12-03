@@ -5,8 +5,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
 import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Created by IntelliJ IDEA.
@@ -60,15 +60,16 @@ public class JarBrowserFile extends File
 
     public JarBrowserFile(String s) {
         super(s);
-        explodedFile = new File(tempDirectory.getAbsoluteFile() + File.pathSeparator + getExplodedFileName());
+        explodedFile = new File(tempDirectory.getAbsoluteFile() + File.separator + getExplodedFileName());
+        explodedFile.mkdir();
 
         log.info("Created JarBrowserFile: " + this.toString());
     }
 
     private String getExplodedFileName(){
         return this.getName().substring(
-                    this.getName().lastIndexOf(".") + 1,
-                    this.getName().length() );
+                    0,
+                    this.getName().lastIndexOf("."));
     }
 
     /**
@@ -85,25 +86,39 @@ public class JarBrowserFile extends File
     public File[] listFiles() {
         log.info("Listing files for a compressed file: " + this.getAbsolutePath());
 
-        if(this.exists()){
-            log.info("File exists");
-        }
-        else{
-            log.info("File appears not to exist: --" + this.getAbsolutePath() + "--");
-        }
-
-        FileInputStream fis;
-        InflaterInputStream iis;
+        InputStream is;
         FileOutputStream fos;
+        ZipFile zipFile;
+        Enumeration zipEnumeration;
+        
         try{
-            fis = new FileInputStream(this.getAbsolutePath());
-            //iis = new InflaterInputStream(fis);
-            iis = new GZIPInputStream(fis);
-            fos = new FileOutputStream(explodedFile);
+            zipFile = new ZipFile(this);
+            zipEnumeration= zipFile.entries();
 
-            for(int c = iis.read(); c != -1; c = iis.read()){
-                fos.write(c);
+            while(zipEnumeration.hasMoreElements())
+            {
+                ZipEntry zipEntry = (ZipEntry) zipEnumeration.nextElement();
+                File extractedFile = new File(
+                        explodedFile.getAbsolutePath() + File.separator + zipEntry.getName());
+
+                is = zipFile.getInputStream(zipEntry);
+
+
+                if(zipEntry.isDirectory()){
+                    log.info("Ensuring directory exists: " + extractedFile.getAbsolutePath());
+                    extractedFile.mkdirs();
+                }
+                else{
+                    log.info("Extracting file: " + extractedFile.getAbsolutePath());
+                    fos = new FileOutputStream(
+                            explodedFile.getAbsolutePath() + File.separator + zipEntry.getName());
+
+                    for(int c = is.read(); c != -1; c = is.read()){
+                        fos.write(c);
+                    }
+                }
             }
+
         }
         catch(FileNotFoundException e){
             log.error("Error magic-ing", e);
@@ -112,9 +127,22 @@ public class JarBrowserFile extends File
             log.error("Error magic-ing", e);
         }
 
+        //Be careful... we don't want to recur here (that's why we are calling File::listFiles())
+        File[] tempFiles = new File(explodedFile.getAbsolutePath()).listFiles();
+
+        List<File> files = new ArrayList<File>();
+
+        for(File f : tempFiles)
+        {
+            files.add(JarBrowserFileFactory.getInstance(f));
+        }
+
+        return (File[]) files.toArray();
+
         //Now, since these files all live in the temp directory, they all need to be JarBrowserFiles
         //TODO: do something useful here... just returning an empty list so it compiles
-        return (File[]) new ArrayList<File>().toArray();
+        //return (File[]) new ArrayList<File>().toArray();
+        //return null;
 
        // return super.listFiles();    //To change body of overridden methods use File | Settings | File Templates.
     }

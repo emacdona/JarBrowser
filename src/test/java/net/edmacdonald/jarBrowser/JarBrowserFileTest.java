@@ -53,6 +53,6 @@ public class JarBrowserFileTest
                         JarBrowserFileFactory.config.getString(
                                 JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY)));
 
-        file.listFiles();
+        Assert.assertNull(file.listFiles());
     }
 }

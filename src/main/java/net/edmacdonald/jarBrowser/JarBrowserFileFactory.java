@@ -4,11 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 /**
@@ -34,6 +29,8 @@ public class JarBrowserFileFactory {
             log.info("Property: " + key + " = " + config.getString(key));
         }
     }
+
+    private JarBrowserFileFactory(){}
 
     /**
      * Get an instance of a File.
