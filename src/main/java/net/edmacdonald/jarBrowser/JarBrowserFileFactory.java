@@ -22,34 +22,14 @@ public class JarBrowserFileFactory {
 
     public static String SAMPLE_COMPRESSED_FILE_NAME_PROPERTY = "sampleCompressedFile";
 
-    //public static Properties config;
     public static ResourceBundle config;
 
     private static Log log = LogFactory.getLog(JarBrowserFileFactory.class);
 
     static{
-        //config = new Properties();
         config =  ResourceBundle.getBundle("jarBrowserFileFactory");
-        //try{
-            //config.load(new FileInputStream("jarBrowserFileFactory.properties"));
-        //}
-        /*
-        catch(FileNotFoundException e){
-            log.error("Error configuring", e);
-        }
-        catch(IOException e){
-            log.error("Error configuring", e);
-        }
-        */
 
         log.info("Property listing:");
-
-        /*
-        for(String key : config.stringPropertyNames()){
-            log.info("Property: " + key + " = " + config.getProperty(key));
-        }
-        */
-
         for(String key : config.keySet()){
             log.info("Property: " + key + " = " + config.getString(key));
         }
@@ -63,14 +43,14 @@ public class JarBrowserFileFactory {
      */
     static public File getInstance(File file)
     {
-        log.info("Getting a file instance for: " + file != null ? file.getName() : "null");
+        log.info("Getting a file instance for: " + (file != null ? file.getAbsolutePath() : "null"));
 
         if(file.exists()){
             if(JarBrowserFile.isBrowsableFile(file)) {
-                return new JarBrowserFile(file.getName());
+                return new JarBrowserFile(file.getAbsolutePath());
             }
             else if(file.isDirectory()){
-                return new JarBrowserDirectory(file.getName());
+                return new JarBrowserDirectory(file.getAbsolutePath());
             }
         }
 

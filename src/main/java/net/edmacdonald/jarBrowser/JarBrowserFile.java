@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
@@ -82,25 +83,33 @@ public class JarBrowserFile extends File
 
     @Override
     public File[] listFiles() {
-        log.info("Listing files for a compressed file. Magic happening!");
+        log.info("Listing files for a compressed file: " + this.getAbsolutePath());
+
+        if(this.exists()){
+            log.info("File exists");
+        }
+        else{
+            log.info("File appears not to exist: --" + this.getAbsolutePath() + "--");
+        }
 
         FileInputStream fis;
         InflaterInputStream iis;
         FileOutputStream fos;
         try{
-            fis = new FileInputStream(this.getName());
-            iis = new InflaterInputStream(fis);
-            fos = new FileOutputStream(this.explodedFile);
+            fis = new FileInputStream(this.getAbsolutePath());
+            //iis = new InflaterInputStream(fis);
+            iis = new GZIPInputStream(fis);
+            fos = new FileOutputStream(explodedFile);
 
             for(int c = iis.read(); c != -1; c = iis.read()){
                 fos.write(c);
             }
         }
         catch(FileNotFoundException e){
-
+            log.error("Error magic-ing", e);
         }
         catch(IOException e){
-
+            log.error("Error magic-ing", e);
         }
 
         //Now, since these files all live in the temp directory, they all need to be JarBrowserFiles

@@ -50,7 +50,6 @@ public class JarBrowserFileTest
     public void testBrowsableFileExpandedUponListing(){
         File file = JarBrowserFileFactory.getInstance(
                 new File(
-                        //JarBrowserFileFactory.config.getProperty(
                         JarBrowserFileFactory.config.getString(
                                 JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY)));
 
