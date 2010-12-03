@@ -1,10 +1,11 @@
 package net.edmacdonald.jarBrowser;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.*;
+import java.util.*;
+import java.util.zip.InflaterInputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +21,10 @@ public class JarBrowserFile extends File
 
     public static String SYSTEM_TEMP_DIR_PROPERTY = "java.io.tmpdir";
     public static String tempDirName = ".javaFileBrowser";
+
+    protected File explodedFile;
+
+    private Log log = LogFactory.getLog(JarBrowserFile.class);
 
     static{
         extensions = new HashSet<String>(
@@ -54,6 +59,15 @@ public class JarBrowserFile extends File
 
     public JarBrowserFile(String s) {
         super(s);
+        explodedFile = new File(tempDirectory.getAbsoluteFile() + File.pathSeparator + getExplodedFileName());
+
+        log.info("Created JarBrowserFile: " + this.toString());
+    }
+
+    private String getExplodedFileName(){
+        return this.getName().substring(
+                    this.getName().lastIndexOf(".") + 1,
+                    this.getName().length() );
     }
 
     /**
@@ -68,6 +82,38 @@ public class JarBrowserFile extends File
 
     @Override
     public File[] listFiles() {
-        return super.listFiles();    //To change body of overridden methods use File | Settings | File Templates.
+        log.info("Listing files for a compressed file. Magic happening!");
+
+        FileInputStream fis;
+        InflaterInputStream iis;
+        FileOutputStream fos;
+        try{
+            fis = new FileInputStream(this.getName());
+            iis = new InflaterInputStream(fis);
+            fos = new FileOutputStream(this.explodedFile);
+
+            for(int c = iis.read(); c != -1; c = iis.read()){
+                fos.write(c);
+            }
+        }
+        catch(FileNotFoundException e){
+
+        }
+        catch(IOException e){
+
+        }
+
+        //Now, since these files all live in the temp directory, they all need to be JarBrowserFiles
+        //TODO: do something useful here... just returning an empty list so it compiles
+        return (File[]) new ArrayList<File>().toArray();
+
+       // return super.listFiles();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String toString() {
+        return "JarBrowserFile{" +
+                "explodedFile=" + explodedFile +
+                '}';
     }
 }

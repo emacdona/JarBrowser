@@ -1,5 +1,7 @@
 package net.edmacdonald.jarBrowser;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,9 +16,14 @@ import java.io.File;
  */
 public class JarBrowserFileTest
 {
+
+    private Log log = LogFactory.getLog(JarBrowserFileTest.class);
+
     @Test
     public void testIsBrowseableFile()
     {
+        log.info("Running: testIsBrowseableFile");
+        
         Assert.assertTrue(
                 JarBrowserFile.isBrowsableFile(
                         new File("test.jar") ) );
@@ -37,5 +44,16 @@ public class JarBrowserFileTest
                 JarBrowserFile.isBrowsableFile(
                         new File("test.txt") ) );
 
+    }
+
+    @Test
+    public void testBrowsableFileExpandedUponListing(){
+        File file = JarBrowserFileFactory.getInstance(
+                new File(
+                        //JarBrowserFileFactory.config.getProperty(
+                        JarBrowserFileFactory.config.getString(
+                                JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY)));
+
+        file.listFiles();
     }
 }
