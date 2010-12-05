@@ -155,4 +155,6 @@ public class JarBrowserFile extends File
                 "explodedFile=" + explodedFile +
                 '}';
     }
+
+    
 }

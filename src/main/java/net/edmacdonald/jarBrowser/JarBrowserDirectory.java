@@ -17,6 +17,10 @@ public class JarBrowserDirectory extends JarBrowserFile
         super(s);
     }
 
+    /*
+     * Override listFiles so that it chooses the right implementation for each child.
+     * TODO: we may want do choose implementation for the children in the constructor instead of here?
+     */
     @Override
     public File[] listFiles() {
         List<File> jarBrowserFiles = new ArrayList<File>();
