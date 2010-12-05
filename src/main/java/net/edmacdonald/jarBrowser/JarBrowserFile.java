@@ -1,5 +1,6 @@
 package net.edmacdonald.jarBrowser;
 
+import org.apache.commons.collections.iterators.ArrayIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -67,9 +68,16 @@ public class JarBrowserFile extends File
     }
 
     private String getExplodedFileName(){
-        return this.getName().substring(
+        int indexOfLastDot = this.getName().lastIndexOf(".");
+
+        if(indexOfLastDot >= 0){
+            return this.getName().substring(
                     0,
-                    this.getName().lastIndexOf("."));
+                    indexOfLastDot);
+        }
+        else{
+            return this.getName();
+        }
     }
 
     /**
@@ -121,10 +129,10 @@ public class JarBrowserFile extends File
 
         }
         catch(FileNotFoundException e){
-            log.error("Error magic-ing", e);
+            log.error("Error: ", e);
         }
         catch(IOException e){
-            log.error("Error magic-ing", e);
+            log.error("Error: ", e);
         }
 
         //Be careful... we don't want to recur here (that's why we are calling File::listFiles())
@@ -132,19 +140,13 @@ public class JarBrowserFile extends File
 
         List<File> files = new ArrayList<File>();
 
-        for(File f : tempFiles)
-        {
-            files.add(JarBrowserFileFactory.getInstance(f));
+        Iterator<File> tempFileIterator = new ArrayIterator(tempFiles);
+
+        while(tempFileIterator.hasNext()){
+            files.add(JarBrowserFileFactory.getInstance(tempFileIterator.next()));
         }
 
-        return (File[]) files.toArray();
-
-        //Now, since these files all live in the temp directory, they all need to be JarBrowserFiles
-        //TODO: do something useful here... just returning an empty list so it compiles
-        //return (File[]) new ArrayList<File>().toArray();
-        //return null;
-
-       // return super.listFiles();    //To change body of overridden methods use File | Settings | File Templates.
+        return files.toArray(new File[0]);
     }
 
     @Override

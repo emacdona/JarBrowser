@@ -27,6 +27,6 @@ public class JarBrowserDirectory extends JarBrowserFile
             );
         }
 
-        return (File[]) jarBrowserFiles.toArray();
+        return jarBrowserFiles.toArray(new File[0]);
     }
 }

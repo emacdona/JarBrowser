@@ -3,6 +3,7 @@ package net.edmacdonald.jarBrowser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -18,6 +19,15 @@ public class JarBrowserFileTest
 {
 
     private Log log = LogFactory.getLog(JarBrowserFileTest.class);
+
+    private String sampleArchiveFileName;
+    
+    @BeforeClass
+    public void setuptTest(){
+        sampleArchiveFileName = JarBrowserFileFactory.config.getString(
+                JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY);
+
+    }
 
     @Test
     public void testIsBrowseableFile()
@@ -48,11 +58,7 @@ public class JarBrowserFileTest
 
     @Test
     public void testBrowsableFileExpandedUponListing(){
-        File file = JarBrowserFileFactory.getInstance(
-                new File(
-                        JarBrowserFileFactory.config.getString(
-                                JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY)));
-
-        Assert.assertNull(file.listFiles());
+        File file = JarBrowserFileFactory.getInstance(new File(sampleArchiveFileName));
+        Assert.assertNotNull(file.listFiles());
     }
 }
