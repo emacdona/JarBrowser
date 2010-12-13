@@ -17,7 +17,7 @@ public class Model implements TreeModel {
     @Override
     public Object getRoot() {
         log.debug("getting root");
-        return root;  //To change body of implemented methods use File | Settings | File Templates.
+        return root;
     }
 
     @Override
@@ -45,7 +45,8 @@ public class Model implements TreeModel {
 
     @Override
     public void valueForPathChanged(TreePath treePath, Object o) {
-        //TODO: something?
+        //For the time being, we aren't changing files, so do nothing
+        //TODO: track changes of files and allow for modification of archives
     }
 
     @Override

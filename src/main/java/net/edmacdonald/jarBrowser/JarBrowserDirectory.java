@@ -11,10 +11,21 @@ import java.util.List;
  * Time: 8:35:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JarBrowserDirectory extends File
+public class JarBrowserDirectory extends JTreeFile
 {
+    private List<File> children;
+
     public JarBrowserDirectory(String s) {
         super(s);
+
+        children = new ArrayList<File>();
+
+        for(File file : super.listFiles()){
+            children.add(
+                    JarBrowserFileFactory.getInstance(file)
+            );
+        }
+
     }
 
     /*
@@ -23,14 +34,6 @@ public class JarBrowserDirectory extends File
      */
     @Override
     public File[] listFiles() {
-        List<File> jarBrowserFiles = new ArrayList<File>();
-
-        for(File file : super.listFiles()){
-            jarBrowserFiles.add(
-                    JarBrowserFileFactory.getInstance(file)
-            );
-        }
-
-        return jarBrowserFiles.toArray(new File[0]);
+        return children.toArray(new File[0]);
     }
 }

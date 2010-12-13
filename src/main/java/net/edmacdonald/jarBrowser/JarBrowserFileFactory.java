@@ -51,6 +51,6 @@ public class JarBrowserFileFactory {
             }
         }
 
-        return file;
+        return new JTreeFile(file.getAbsolutePath());
     }
 }

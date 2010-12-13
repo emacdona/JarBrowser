@@ -16,7 +16,7 @@ import java.util.zip.ZipFile;
  * Time: 5:32:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JarBrowserFile extends File
+public class JarBrowserFile extends JTreeFile
 {
     protected static Set<String> extensions;
     protected static File tempDirectory;
@@ -25,6 +25,8 @@ public class JarBrowserFile extends File
     public static String tempDirName = ".javaFileBrowser";
 
     protected File explodedFile;
+
+    List<File> children;
 
     private Log log = LogFactory.getLog(JarBrowserFile.class);
 
@@ -65,41 +67,13 @@ public class JarBrowserFile extends File
         explodedFile = new File(tempDirectory.getAbsoluteFile() + File.separator + getExplodedFileName());
         explodedFile.mkdir();
 
-        log.info("Created JarBrowserFile: " + this.toString());
-    }
-
-    private String getExplodedFileName(){
-        int indexOfLastDot = this.getName().lastIndexOf(".");
-
-        if(indexOfLastDot >= 0){
-            return this.getName().substring(
-                    0,
-                    indexOfLastDot);
-        }
-        else{
-            return this.getName();
-        }
-    }
-
-    /**
-     * Treat browseable files like directories.
-     * 
-     * @return
-     */
-    @Override
-    public boolean isDirectory() {
-        return true;
-    }
-
-    @Override
-    public File[] listFiles() {
         log.info("Listing files for a compressed file: " + this.getAbsolutePath());
 
         InputStream is;
         FileOutputStream fos;
         ZipFile zipFile;
         Enumeration zipEnumeration;
-        
+
         try{
             zipFile = new ZipFile(this);
             zipEnumeration= zipFile.entries();
@@ -136,26 +110,53 @@ public class JarBrowserFile extends File
             log.error("Error: ", e);
         }
 
-        //Be careful... we don't want to recur here (that's why we are calling File::listFiles())
+        //No mistake, we really do want the super class listFiles() method
         File[] tempFiles = new File(explodedFile.getAbsolutePath()).listFiles();
 
-        List<File> files = new ArrayList<File>();
+        children = new ArrayList<File>();
 
         Iterator<File> tempFileIterator = new ArrayIterator(tempFiles);
 
         while(tempFileIterator.hasNext()){
-            files.add(JarBrowserFileFactory.getInstance(tempFileIterator.next()));
+            children.add(JarBrowserFileFactory.getInstance(tempFileIterator.next()));
         }
 
-        return files.toArray(new File[0]);
+        log.info("Created JarBrowserFile: " + this.toString());
+    }
+
+    private String getExplodedFileName(){
+        int indexOfLastDot = this.getName().lastIndexOf(".");
+
+        if(indexOfLastDot >= 0){
+            return this.getName().substring(
+                    0,
+                    indexOfLastDot);
+        }
+        else{
+            return this.getName();
+        }
+    }
+
+    /**
+     * Treat browseable files like directories.
+     * 
+     * @return
+     */
+    @Override
+    public boolean isDirectory() {
+        return true;
+    }
+
+    @Override
+    public File[] listFiles() {
+        return children.toArray(new File[0]);
     }
 
     @Override
     public String toString() {
-        return "JarBrowserFile{" +
-                "explodedFile=" + explodedFile +
-                '}';
+        //TODO: I don't like this. I'm changing toString() just so this thing will display properly in the
+        //JTree. What's worse is that files that aren't JBrowser files can't display correctly (they use
+        //File::toString(), which gives the whole path
+        return this.getName();
     }
-
-    
 }
