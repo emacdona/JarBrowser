@@ -53,6 +53,7 @@ public class JarBrowserFile extends File
 
         String filename = file.getName();
 
+        // "browsability" determined by file extension
         return extensions.contains(
                 filename.substring(
                         filename.lastIndexOf(".") + 1,

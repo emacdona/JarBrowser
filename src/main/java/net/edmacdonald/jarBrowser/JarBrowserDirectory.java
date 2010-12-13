@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 8:35:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class JarBrowserDirectory extends JarBrowserFile
+public class JarBrowserDirectory extends File
 {
     public JarBrowserDirectory(String s) {
         super(s);
