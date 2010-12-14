@@ -12,19 +12,19 @@ import java.net.URI;
 
 public class JTreeFile extends File {
     public JTreeFile(String s) {
-        super(s);    //To change body of overridden methods use File | Settings | File Templates.
+        super(s);
     }
 
     public JTreeFile(String s, String s1) {
-        super(s, s1);    //To change body of overridden methods use File | Settings | File Templates.
+        super(s, s1);
     }
 
     public JTreeFile(File file, String s) {
-        super(file, s);    //To change body of overridden methods use File | Settings | File Templates.
+        super(file, s);
     }
 
     public JTreeFile(URI uri) {
-        super(uri);    //To change body of overridden methods use File | Settings | File Templates.
+        super(uri);
     }
 
     public String toString(){
