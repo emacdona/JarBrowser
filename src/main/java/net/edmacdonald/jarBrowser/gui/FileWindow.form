@@ -26,12 +26,6 @@
           </component>
         </children>
       </scrollpane>
-      <component id="2e049" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-      </component>
       <toolbar id="95e15">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
@@ -39,9 +33,17 @@
           </grid>
         </constraints>
         <properties/>
-        <border type="none" title="Test"/>
+        <border type="none" title="JarBrowser"/>
         <children/>
       </toolbar>
+      <component id="fd6fd" class="javax.swing.JButton" binding="openFileButton" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Open File ..."/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

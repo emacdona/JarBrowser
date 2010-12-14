@@ -1,5 +1,7 @@
 package net.edmacdonald.jarBrowser.gui;
 
+import com.sun.java.swing.plaf.nimbus.FileChooserPainter;
+import net.edmacdonald.jarBrowser.JarBrowserFileFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -8,6 +10,8 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class FileWindow {
     private JTree tree1;
     private JPanel panel1;
-    private JComboBox comboBox1;
+    private JButton openFileButton;
 
     private static Log log = LogFactory.getLog(FileWindow.class);
 
@@ -30,17 +34,28 @@ public class FileWindow {
         tree1.setModel(new DefaultTreeModel(root));
         */
 
-        tree1.setModel(new Model());
+        tree1.setModel(null);
 
-        tree1.addTreeExpansionListener(new TreeExpansionListener() {
+        openFileButton.addActionListener(new ActionListener() {
             @Override
-            public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
-                log.info(treeExpansionEvent.getPath().getLastPathComponent());
-            }
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(panel1);
+                log.debug("Attempting to open a file!");
 
-            @Override
-            public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                tree1.setModel(new Model(JarBrowserFileFactory.getInstance(fc.getSelectedFile())));
+
+                tree1.addTreeExpansionListener(new TreeExpansionListener() {
+                    @Override
+                    public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
+                        log.info(treeExpansionEvent.getPath().getLastPathComponent());
+                    }
+
+                    @Override
+                    public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
+                        //To change body of implemented methods use File | Settings | File Templates.
+                    }
+                });
             }
         });
     }

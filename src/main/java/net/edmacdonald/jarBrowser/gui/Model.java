@@ -74,10 +74,13 @@ public class Model implements TreeModel {
     }
 
     public Model() {
+        /*
         root = JarBrowserFileFactory.getInstance(
                 new File(
                         JarBrowserFileFactory.config.getString(
                                 JarBrowserFileFactory.SAMPLE_COMPRESSED_FILE_NAME_PROPERTY)));
+        */
+        root = null;
     }
 
     public Model(File root){
