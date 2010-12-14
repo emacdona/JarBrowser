@@ -1,3 +1,9 @@
 JarBrowser
 
 A utility for browsing Java archives (jar, war, ear, zip)
+
+Get yourself a nice executable jar file:
+
+mvn assembly:assembly
+cd target
+java -jar JarBrowser-1.0-jar-with-dependencies.jar

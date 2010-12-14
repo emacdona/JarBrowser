@@ -10,6 +10,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,7 +35,8 @@ public class FileWindow {
         tree1.setModel(new DefaultTreeModel(root));
         */
 
-        tree1.setModel(null);
+        //tree1.setModel(null);
+        tree1.setModel(new DefaultTreeModel(new DefaultMutableTreeNode(null)));
 
         openFileButton.addActionListener(new ActionListener() {
             @Override
