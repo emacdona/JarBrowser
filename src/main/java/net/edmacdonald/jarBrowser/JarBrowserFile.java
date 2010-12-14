@@ -151,12 +151,4 @@ public class JarBrowserFile extends JTreeFile
     public File[] listFiles() {
         return children.toArray(new File[0]);
     }
-
-    @Override
-    public String toString() {
-        //TODO: I don't like this. I'm changing toString() just so this thing will display properly in the
-        //JTree. What's worse is that files that aren't JBrowser files can't display correctly (they use
-        //File::toString(), which gives the whole path
-        return this.getName();
-    }
 }
