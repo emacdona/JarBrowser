@@ -62,8 +62,7 @@ public class JarBrowserFile extends JTreeFile
                         filename.length()));
     }
 
-    public JarBrowserFile(String s) {
-        super(s);
+    private void init(){
         explodedFile = new File(tempDirectory.getAbsoluteFile() + File.separator + getExplodedFileName());
         explodedFile.mkdir();
 
@@ -124,6 +123,10 @@ public class JarBrowserFile extends JTreeFile
         log.info("Created JarBrowserFile: " + this.toString());
     }
 
+    public JarBrowserFile(String s) {
+        super(s);
+    }
+
     private String getExplodedFileName(){
         int indexOfLastDot = this.getName().lastIndexOf(".");
 
@@ -149,6 +152,9 @@ public class JarBrowserFile extends JTreeFile
 
     @Override
     public File[] listFiles() {
+        if(null == children){
+            init();
+        }
         return children.toArray(new File[0]);
     }
 }
