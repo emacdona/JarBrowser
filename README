@@ -4,7 +4,7 @@ A utility for browsing Java archives (jar, war, ear, zip)
 
 Get yourself a nice executable jar file (now in an easy copy/paste format):
 
-git clone https://emacdona@github.com/emacdona/JarBrowser.git JarBrowser; \
+git clone http://github.com/emacdona/JarBrowser.git JarBrowser; \
 cd JarBrowser; \
 mvn assembly:assembly; \
 cd target; \
