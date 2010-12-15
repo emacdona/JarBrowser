@@ -29,14 +29,7 @@ public class FileWindow {
     private static Log log = LogFactory.getLog(FileWindow.class);
 
     public FileWindow() {
-        /*
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-        root.add(new DefaultMutableTreeNode("foo"));
-        tree1.setModel(new DefaultTreeModel(root));
-        */
-
-        //tree1.setModel(null);
-        tree1.setModel(new DefaultTreeModel(new DefaultMutableTreeNode(null)));
+        tree1.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Open a file using the button above.")));
 
         openFileButton.addActionListener(new ActionListener() {
             @Override
