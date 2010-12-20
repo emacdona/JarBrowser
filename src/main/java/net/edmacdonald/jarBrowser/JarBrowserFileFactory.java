@@ -6,13 +6,6 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.util.ResourceBundle;
 
-/**
- * Created by IntelliJ IDEA.
- * User: emacdona
- * Date: Dec 2, 2010
- * Time: 8:36:32 PM
- * To change this template use File | Settings | File Templates.
- */
 public class JarBrowserFileFactory {
 
     public static String SAMPLE_COMPRESSED_FILE_NAME_PROPERTY = "sampleCompressedFile";

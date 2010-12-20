@@ -9,7 +9,6 @@ import java.net.URI;
  * Kind of annoying. Hopefully I'll find a better way eventually.
  */
 
-
 public class JTreeFile extends File {
     public JTreeFile(String s) {
         super(s);

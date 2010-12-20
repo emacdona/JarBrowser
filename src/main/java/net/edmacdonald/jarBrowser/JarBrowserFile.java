@@ -9,13 +9,6 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/**
- * Created by IntelliJ IDEA.
- * User: emacdona
- * Date: Dec 2, 2010
- * Time: 5:32:31 PM
- * To change this template use File | Settings | File Templates.
- */
 public class JarBrowserFile extends JTreeFile
 {
     protected static Set<String> extensions;
